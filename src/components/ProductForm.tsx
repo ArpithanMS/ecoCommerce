@@ -71,28 +71,28 @@ const ProductForm: React.FC<ProductFormProps> = ({ isOpen, onClose, editingProdu
   };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-  const file = e.target.files?.[0];
-  if (!file) return;
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-  const form = new FormData();
-  form.append('image', file);
+    const form = new FormData();
+    form.append('image', file);
 
-  try {
-    const res = await fetch('http://localhost:5000/upload', {
-      method: 'POST',
-      body: form
-    });
+    try {
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: form
+      });
 
-    const data = await res.json();
-    setFormData({
-      ...formData,
-      image: data.path, // path returned by the backend
-      isUsingLocalImage: true
-    });
-  } catch (err) {
-    console.error('Upload error:', err);
-  }
-};
+      const data = await res.json();
+      setFormData({
+        ...formData,
+        image: data.path,
+        isUsingLocalImage: true
+      });
+    } catch (err) {
+      console.error('Upload error:', err);
+    }
+  };
 
 
   if (!isOpen) return null;

@@ -68,24 +68,21 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const deleteProduct = async (id: string) => {
     const productToDelete = products.find(product => product.id === id);
 
-    // ✅ Attempt to delete uploaded image if it's a local file
     if (productToDelete?.image?.startsWith('/uploads/')) {
       try {
-        await fetch('http://localhost:5000/delete-image', {
+        await fetch('/api/delete', {
           method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ imagePath: productToDelete.image }),
         });
       } catch (error) {
-        console.error('Failed to delete image from server:', error);
+        console.error('Failed to delete image from serverless function:', error);
       }
     }
-
-    // 🗑️ Remove product from local state
+    
     setProducts(prev => prev.filter(product => product.id !== id));
   };
+
 
 
   return (
